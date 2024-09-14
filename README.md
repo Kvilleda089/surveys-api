@@ -8,8 +8,8 @@ Aplicación backend para encuesta
 1. npm install 
 2. Modificar y agregar credenciales en el archivo .env
 3. Tener instalado un contenedor de mysql server
-    3.1 En el enlace oficial de docker hub https://hub.docker.com/r/mysql/mysql-server/
-    3.2 ejecutar el comando: docker pull mysql/mysql-server
+    3.1 En el enlace oficial de docker hub https://hub.docker.com/r/microsoft/mssql-server
+    3.2 ejecutar el comando: docker pull mcr.microsoft.com/mssql/server
     3.3 En el archivo .env hay que colocar los valores, para la conexión a la base de datos, por defecto agregar los siguientes
         - DB_PORT=1433
         - DB_USERNAME=sa
