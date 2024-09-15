@@ -22,10 +22,11 @@ export class Database {
       database: envs.DB_NAME,
       entities: [UserEntity, SurveyEntity, QuestionEntity, QuestionsOptionsEntity, AnswerEntity, AnswerDetailEntity],
       synchronize: false,
+      extra:{
       options: {
         encrypt: false, 
         trustServerCertificate: false,
-      },
+      }},
     });
   }
 

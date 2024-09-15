@@ -4,6 +4,7 @@ import surveyRouter from "../routes/survey.routes";
 import { Database } from "../Data/database";
 import userRouter from "../routes/user.routes";
 import answerRoutes from "../routes/answer.routes";
+import { AuthenticateToken } from "../middlewares/authenticate-token.middlewares";
 
 
 export class Server {
@@ -25,9 +26,9 @@ export class Server {
     };
 
     private routes(): void {
-        this.app.use('/api/forms/surveys', surveyRouter);
-        this.app.use('/api/users', userRouter);
-        this.app.use('/api/forms/answers', answerRoutes);
+        this.app.use('/api/forms/surveys', AuthenticateToken, surveyRouter);
+        this.app.use('/api/users',  userRouter);
+        this.app.use('/api/forms/answers', AuthenticateToken, answerRoutes);
         
     };
 

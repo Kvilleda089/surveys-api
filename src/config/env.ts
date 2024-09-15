@@ -9,4 +9,5 @@ export const envs = {
     DB_NAME: env.get('DB_NAME').required().asString(),
     DB_USERNAME: env.get('DB_USERNAME').required().asString(),
     DB_PASSWORD: env.get('DB_PASSWORD').required().asString(),
+    JWT_SECRET: env.get('JWT_SECRET').required().asString(),
 }
