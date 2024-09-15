@@ -21,12 +21,18 @@ Aplicación backend para encuesta
 docker pull mcr.microsoft.com/mssql/server
 
 `````
-    3.3 En el archivo .env hay que colocar los valores, para la conexión a la base de datos, por defecto agregar los siguientes
+
+3.3 En el archivo .env hay que colocar los valores, para la conexión a la base de datos, por defecto agregar los siguientes
+
 `````
         - DB_PORT=1433
         - DB_USERNAME=sa
 `````
+
+
     3.3 Luego ejecutar el comando 
+
+    
 ````` 
 docker compuse up 
     
