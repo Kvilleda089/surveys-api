@@ -11,7 +11,7 @@ export class QuestionEntity {
   @JoinColumn({name: 'survey_id'})
   survey!: SurveyEntity;
 
-  @Column({name:'question_text'})
+  @Column({name:'question_text', nullable: true})
   questionText!: string;
 
   @Column({name: 'question_type'})

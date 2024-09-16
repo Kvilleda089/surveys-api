@@ -19,7 +19,7 @@ export class SurveyController {
     public async getSurvey(request: Request, response: Response): Promise<Response> {
         try {
             const { id } = request.params;
-            const survey = await surveyService.getSurvey(Number(id));
+            const survey = await surveyService.getSurveyById(Number(id));
             if (!survey) {
                 return response.status(204).json({ message: 'Survey not found' });
             }
@@ -28,6 +28,31 @@ export class SurveyController {
             return response.status(500).json({ message: `Error: ${error}` });
         };
     };
+
+    public async getSurveyByUserId(request: Request, response: Response): Promise<Response> {
+        try {
+            const { createdUserId } = request.query;
+            const page = parseInt(request.query.page as string, 10) || 1;
+            const pageSize = parseInt(request.query.pageSize as string, 10) || 10;
+    
+            if (!createdUserId) {
+                return response.status(400).json({ message: 'createdUserId is required' });
+            }
+            const { surveys, total } = await surveyService.getSurveyByUserId(
+                Number(createdUserId), 
+                page,
+                pageSize
+            );
+    
+            if (!surveys.length) {
+                return response.status(204).json({ message: 'No surveys found' });
+            }
+    
+            return response.status(200).json({ surveys, total });
+        } catch (error) {
+            return response.status(500).json({ message: `Error: ${error}` });
+        }
+    } 
 
     public async updateSurvey(request: Request, response: Response): Promise<Response> {
         try {

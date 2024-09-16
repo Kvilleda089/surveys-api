@@ -30,9 +30,9 @@ docker pull mcr.microsoft.com/mssql/server
 `````
 
 
-    3.3 Luego ejecutar el comando 
+3.3 Luego ejecutar el comando 
 
-    
+
 ````` 
 docker compuse up 
     

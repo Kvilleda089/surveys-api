@@ -17,6 +17,9 @@ surveyRouter.get('/:id', (request: Request, response: Response)=>{
   surveyController.getSurvey(request, response);
 });
 
+surveyRouter.get('/', (request: Request, response: Response)=>{
+    surveyController.getSurveyByUserId(request, response);
+  });
 
 surveyRouter.put('/:id', (request: Request, response: Response)=>{
     surveyController.updateSurvey(request, response);

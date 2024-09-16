@@ -14,8 +14,8 @@ export class SurveyService {
 
 
     public async createSurvey(data: any): Promise<SurveyEntity> {
-        const { title, description, fields, createdUserId } = data;
-
+        
+        const { title, description, questions, createdUserId } = data;
         const survey = new SurveyEntity();
         survey.title = title;
         survey.description = description;
@@ -24,16 +24,18 @@ export class SurveyService {
 
         await this.surveyRepository.save(survey);
 
-        for (const field of fields) {
+        for (const field of questions) {
             const question = new QuestionEntity();
             question.survey = survey;
-            question.questionText = field.name;
-            question.questionType = field.type;
+            question.questionText = field.questionText;
+            question.questionType = field.questionType;
             question.isRequired = field.isRequired;
             await this.questionReposity.save(question);
+
             
-            if (field.type === 'multiple_choice') {
+            if (field.questionType === 'multiple_choice') {
                 for (const optionText of field.options) {
+                    
                     const option = new QuestionsOptionsEntity();
                     option.question = question;
                     option.optionText = optionText;
@@ -42,15 +44,26 @@ export class SurveyService {
             };
         };
 
+       
         return survey;
     };
 
-    public async getSurvey(id: number): Promise<SurveyEntity | null> {
+    public async getSurveyById(id: number): Promise<SurveyEntity | null> {
         return await this.surveyRepository.findOne({
             where: { id },
             relations: ['questions', 'questions.options']
         });
     };
+
+    public async getSurveyByUserId(createdUserId: number, page: number = 1, pageSize: number=10): Promise<{ surveys: SurveyEntity[]; total: number }> {
+        const [surveys, total] = await this.surveyRepository.findAndCount({
+            where: {createdUserId},
+            relations: ['questions', 'questions.options'],
+            take: pageSize,
+            skip: (page-1)* pageSize
+        })
+        return {surveys, total};
+    }
 
     public async updateSurvey(id: number, data: any): Promise<SurveyEntity | null> {
         const survey = await this.surveyRepository.findOne({
@@ -58,10 +71,10 @@ export class SurveyService {
             relations: ['questions', 'questions.options']
         })
 
-        console.log(data);
+        
         if (!survey) return null;
 
-        const { title, description, fields } = data;
+        const { title, description, questions } = data;
         survey.title = title;
         survey.description = description;
         survey.updateAt = new Date();
@@ -71,29 +84,30 @@ export class SurveyService {
         const existingQuestionsMap = new Map<number, QuestionEntity>();
         survey.questions.forEach(question => existingQuestionsMap.set(question.id, question));
 
-        for (const field of fields) {
+        for (const field of questions) {
             if (field.id) {
                 const existingQuestion = existingQuestionsMap.get(field.id);
                 if (existingQuestion) {
-                    existingQuestion.questionText = field.name;
-                    existingQuestion.questionType = field.type;
+                    existingQuestion.questionText = field.questionText;
+                    existingQuestion.questionType = field.questionType;
                     existingQuestion.isRequired = field.isRequired;
                     await this.questionReposity.save(existingQuestion);
-                    console.log(existingQuestion);
+                   
 
-                    if (field.type === 'multiple_choice') {
+                    if (field.questionType === 'multiple_choice') {
                         const existingOptionsMap = new Map<number, QuestionsOptionsEntity>();
                         existingQuestion.options.forEach(opt => existingOptionsMap.set(opt.id, opt));
 
 
                         for (const optionText of field.options) {
-                            const existingOption = Array.from(existingOptionsMap.values()).find(opt => opt.optionText === optionText);
-
+                           
+                            const existingOption = Array.from(existingOptionsMap.values()).find(opt => opt.optionText === optionText.optionText);
+                            
                             if (!existingOption) {
-
+                                
                                 const newOption = new QuestionsOptionsEntity();
                                 newOption.question = existingQuestion;
-                                newOption.optionText = optionText;
+                                newOption.optionText = optionText.optionText;
                                 await this.questionOptionsRepository.save(newOption);
                             } else {
                                 existingOptionsMap.delete(existingOption.id);
@@ -110,13 +124,13 @@ export class SurveyService {
 
                 const newQuestion = new QuestionEntity();
                 newQuestion.survey = survey;
-                newQuestion.questionText = field.name;
-                newQuestion.questionType = field.type;
+                newQuestion.questionText = field.questionText;
+                newQuestion.questionType = field.questionType;
                 newQuestion.isRequired = field.isRequired;
                 await this.questionReposity.save(newQuestion);
 
 
-                if (field.type === 'multiple_choice') {
+                if (field.questionType === 'multiple_choice') {
                     for (const optionText of field.options) {
                         const option = new QuestionsOptionsEntity();
                         option.question = newQuestion;
@@ -129,7 +143,7 @@ export class SurveyService {
 
 
         for (const existingQuestion of survey.questions) {
-            if (!fields.find((field: any) => field.id === existingQuestion.id)) {
+            if (!questions.find((field: any) => field.id === existingQuestion.id)) {
 
                 await this.questionOptionsRepository.remove(existingQuestion.options);
                 await this.questionReposity.remove(existingQuestion);
