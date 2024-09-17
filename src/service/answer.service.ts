@@ -3,9 +3,10 @@ import { AnswerEntity } from '../Data/models/answer.entity';
 import { SurveyEntity } from '../Data/models/survey.entity';
 import { AnswerDetailEntity } from '../Data/models/answer-detail.entity';
 import { UserEntity } from '../Data/models/user.entity';
-import { AnswerData } from './interface/AnswerData.interface'
+import { AnswerData } from './interface/answer-data.interface'
 import { QuestionEntity } from "../Data/models/question.entity";
 import { QuestionsOptionsEntity } from "../Data/models/questions_options.entity";
+import { PathParams } from './interface/path-params';
 
 
 
@@ -73,7 +74,7 @@ export class AnswerService {
         if (!answer) return null;
 
         return answer;
-    }
+    } 
 
     public async updateAnswer(answerId: number, body: any): Promise<AnswerEntity | null> {
         const { details } = body;
@@ -140,5 +141,22 @@ export class AnswerService {
         }
         await this.answerRepository.remove(answer);
         return answer;
+    }
+
+    public async getAnswerByUserIdAndSurveyId(data: PathParams): Promise<{answers: AnswerEntity[]; total: number}> {
+        const {userId, surveId, page=1, pageSize=10} = data;
+        
+        const [answers, total] = await this.answerRepository.findAndCount({
+       
+            where: { 
+                modifiedUser: { id: userId }, 
+                survey: { id: surveId } 
+            },
+            relations: ['survey', 'modifiedUser', 'details', 'details.question', 'details.questionOption'],
+            take: Number(pageSize),
+            skip: Number((page-1))* pageSize
+        });
+
+        return {answers, total}
     }
 }

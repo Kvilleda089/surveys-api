@@ -15,6 +15,10 @@ answerRoutes.get('/:answerId/surveys/:suverId', (request: Request, response: Res
     answerController.getAnswers(request, response);
 });
 
+answerRoutes.get('/users/:userId/surveys/:surveId', (request: Request, response: Response)=>{
+    answerController.getAnswerByUserIdAndSurveyId(request, response);
+});
+
 answerRoutes.put('/:id', (request: Request, response: Response)=>{
     answerController.updateAnswers(request, response);
 });
