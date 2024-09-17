@@ -1,72 +1,66 @@
+
+1.228 / 5.000
 # surveys-api
-Aplicación backend para encuesta
+Backend application for survey
 
-## Instrucciones para levantar la aplicación. 
+## Instructions to launch the application.
 
-
-
-1. instalar dependencias: 
+1. Install dependencies:
 `````
- npm install
+npm install
 `````
 
-2. Modificar y agregar credenciales en el archivo .env
+2. Modify and add credentials in the .env file
 
-3. Tener instalado un contenedor de mysql server
+3. Have a mysql server container installed
 
-    3.1 En el enlace oficial de docker hub https://hub.docker.com/r/microsoft/mssql-server
+3.1 In the official docker hub link https://hub.docker.com/r/microsoft/mssql-server
 
-    3.2 ejecutar el comando: 
+3.2 run the command:
 `````
 docker pull mcr.microsoft.com/mssql/server
 
 `````
 
-3.3 En el archivo .env hay que colocar los valores, para la conexión a la base de datos, por defecto agregar los siguientes
+3.3 In the .env file you have to put the values, for the connection to the database, by default add the following
 
 `````
-        - DB_PORT=1433
-        - DB_USERNAME=sa
+- DB_PORT=1433
+- DB_USERNAME=sa
 `````
 
-
-3.4 Luego ejecutar el comando 
-
-
-````` 
-docker compuse up 
-    
-`````
-
-## Creación Tablas 
-
-- En la siguiente ruta, encontrarán los scripts, de las tablas que se crearon: 
+3.4 Then run the command
 
 `````
- src/Data/scripts
-`````
-
-
-3. Una vez creada las tablas, base de datos y haber ingresado las variables de entorno, ejecutar el comando: 
+docker compose up
 
 `````
- npm run dev
+
+## Creating Tables
+
+- In the following path, you will find the scripts, from the tables that were created:
+
+`````
+src/Data/scripts
 `````
 
+3. Once the tables and database have been created and the environment variables have been entered, run the command:
 
-## Para ejecutar las pruebas unitarías, seguir los siguientes pasos: 
+`````
+npm run dev
+`````
 
-1. Ejecutar pruebas unitarías, correr el siguiente comando 
+## To run the unit tests, follow these steps:
 
+1. Run unit tests, run the following command
 
-````` 
-npm run test:watch 
+`````
+npm run test:watch
 
-````` 
-2. Para ver covertura, ejectuar el siguiente comando: 
+`````
+2. To see coverage, run the following command:
 
+`````
+npm run test:coverage
 
-````` 
-npm run test:coverage 
-
-````` 
+`````
