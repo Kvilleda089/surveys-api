@@ -47,7 +47,11 @@ docker compuse up
 `````
 
 
-3. Una vez ya ingresado las variables de entorno necesarias, ejecutar npm run dev
+3. Una vez creada las tablas, base de datos y haber ingresado las variables de entorno, ejecutar el comando: 
+
+`````
+ npm run dev
+`````
 
 
 ## Para ejecutar las pruebas unitarías, seguir los siguientes pasos: 
