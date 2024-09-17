@@ -30,11 +30,39 @@ docker pull mcr.microsoft.com/mssql/server
 `````
 
 
-3.3 Luego ejecutar el comando 
+3.4 Luego ejecutar el comando 
 
 
 ````` 
 docker compuse up 
     
 `````
+
+## Creación Tablas 
+
+- En la siguiente ruta, encontrarán los scripts, de las tablas que se crearon: 
+
+`````
+ src/Data/scripts
+`````
+
+
 3. Una vez ya ingresado las variables de entorno necesarias, ejecutar npm run dev
+
+
+## Para ejecutar las pruebas unitarías, seguir los siguientes pasos: 
+
+1. Ejecutar pruebas unitarías, correr el siguiente comando 
+
+
+````` 
+npm run test:watch 
+
+````` 
+2. Para ver covertura, ejectuar el siguiente comando: 
+
+
+````` 
+npm run test:coverage 
+
+````` 
