@@ -29,7 +29,7 @@ export class UserService {
     }; 
 
     public async getUserById(userId: number): Promise<UserEntity | null> {
-        return await this.userRepository.findOneBy({id: userId});
+        return await this.userRepository.findOne({where: {id: userId}})
     };
 
    public async login(email: string, password: string): Promise<{ user: UserEntity, token: string } | null>{
