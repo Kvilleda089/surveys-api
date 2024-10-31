@@ -61,6 +61,6 @@ npm run test:watch
 2. To see coverage, run the following command:
 
 `````
-npm run test:coverage
+npm run test:coveragev
 
 `````
